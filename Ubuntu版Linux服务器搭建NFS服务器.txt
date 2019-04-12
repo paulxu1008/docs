@@ -1,0 +1,24 @@
+﻿Ubuntu版Linux服务器搭建NFS服务器方法:
+	1、安装rpcbind（有的可省略）
+	sudo apt-get install rpcbind
+
+	2、安装nfs-kernel-server（安装nfs-kernel-server时，apt会自动安装nfs-common和portmap）
+	sudo apt-get install nfs-kernel-server
+
+	3、配置nfs（也可直接去服务器上编辑/etc/expores文件）
+	sudo vim /etc/exports
+	在末尾一行加入/home/nfs ip(rw,sync,no_root_squash,no_subtree_check)
+	注：允许访问的客户端ip，也可为*
+
+	4、设置/home/nfs目录权限（可省略）
+	sudo chmod 777 /home/nfs -R
+
+	5、重启服务
+	sudo service rpcbind start（可省略）
+	sudo service nfs-kernel-server start
+
+	6、显示目标共享目录
+	showmount -e 目标ip
+
+	7、将客户端目录挂载到服务器上（此处在客户端操作）
+	sudo mount -t nfs 服务器IP:/home/nfs /home/nfs
